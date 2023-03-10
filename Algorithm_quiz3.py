@@ -26,14 +26,14 @@ for i in range(nodeN):
     for k in range(i + 1, nodeN):
         if math.sqrt((pos[i][0] - pos[k][0]) ** 2 + (pos[i][1] - pos[k][1]) ** 2) <= 10 :
             # 두 점 (x1,y1)과 (x2,y2)와 거리는 ((x1-x2)2 + (y1-y2)2)1/2 이며
-            # 폭탄의 최대 반경인 값 20으로 지정( 기지로부터 반경은 반지름 10)
+            # 치료의 최대 반경인 값 20으로 지정( 도시로부터 반경은 반지름 10)
             graph.add_edge(i, k)  # 서로 유효 범위내에 있는 노드끼리 간선 연결)
 
 removed = [False] * nodeN
 count = [0] * nodeN
 temp = 0
-NodeBobmlist = []  # 초기화
-NodeBobmCount = 0;
+NodeVisitlist = []  # 초기화
+NodeVisitCount = 0;
 
 # setCover 알고리즘
 while True:  # 무한 반복
@@ -52,12 +52,12 @@ while True:  # 무한 반복
     removed[temp] = True  # 간선이 가장 많은 노드 자신의 removed = True 변경
     for cn in graph.neighbors(temp):  # 최대 연결되어있는 노드의 연결된 노드들
         removed[cn] = True  # temp 노드 각각 간선노드를 Ture 변경(범위안에 포함됨)
-    NodeBobmlist.append(temp)  # 가장 많이 커버하는 노드를 찾아 삽입(폭탄노드 생성)
-    NodeBobmCount += 1  # 최대 폭탄 투하량
-    if False not in removed:  # removed 에 False 가없으면 종료 (모든 노드가 폭탄노드 범위에 들어감) U != NULL 부분
+    NodeVisitlist.append(temp)  # 가장 많이 커버하는 노드를 찾아 삽입(폭탄노드 생성)
+    NodeVisitCount += 1  # 최대 도시 방문량
+    if False not in removed:  # removed 에 False 가없으면 종료 (모든 노드가 방문노드 범위에 들어감) U != NULL 부분
         break
 
-print("최소 소요되는 일(날) 수 : ", NodeBobmCount)  # 최소 폭탄의수 출력
+print("최소 소요되는 일(날) 수 : ", NodeVisitCount)  # 최소 방문 도시 출력
 
 plt.figure(figsize=(8, 8))  # 캔버스 크기
 
@@ -65,5 +65,5 @@ plt.figure(figsize=(8, 8))  # 캔버스 크기
 nx.draw_networkx_nodes(graph, pos=pos, node_color='blue', node_size=30)
 # 간선 그리기
 nx.draw_networkx_edges(graph, pos=pos)
-nx.draw_networkx_nodes(graph, pos = pos, node_color = '#FF0000', nodelist=NodeBobmlist,node_size=6500,alpha= 0.3)
+nx.draw_networkx_nodes(graph, pos = pos, node_color = '#FF0000', nodelist=NodeVisitlist,node_size=6500,alpha= 0.3)
 plt.show()
